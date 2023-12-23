@@ -1,0 +1,29 @@
+{
+  "version": "experimental",
+  "tags": [
+    {
+      "name": "arc-icon",
+      "path": "./arc-icon.js",
+      "attributes": [
+        {
+          "name": "icon",
+          "description": "An icon to be rendered from the ApiIcons library.\nWhen incorrect icon is referenced nothing is rendered.",
+          "type": "Icons"
+        }
+      ],
+      "properties": [
+        {
+          "name": "icon",
+          "attribute": "icon",
+          "description": "An icon to be rendered from the ApiIcons library.\nWhen incorrect icon is referenced nothing is rendered.",
+          "type": "Icons"
+        },
+        {
+          "name": "hasIcon",
+          "description": "True when the icon was found and is rendered.",
+          "type": "boolean"
+        }
+      ]
+    }
+  ]
+}

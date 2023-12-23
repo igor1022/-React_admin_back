@@ -1,0 +1,8 @@
+const key = `-----BEGIN PUBLIC KEY-----
+MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDCD8Lb3vE8m1CoY7b//CN0OhGr
+sxxJCzXyb9Vam/Rs0Rrmw8Nf4dc4PaBA8rhujywZBuoK3j6mawIMlhW9p+5uuTj5
+olU/agQBkQSK6HiRsPDZNBzWI6Zn2SlisF7ptHCPaVVKu72ggXiQjX0BizO08hl+
+xbo0SqyFDFHsAG6hTwIDAQAB
+-----END PUBLIC KEY-----`;
+
+export default key;

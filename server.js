@@ -1,6 +1,7 @@
 import express from 'express';
 import {createNewLot, DeleteElem, findAllState, findCount, findLot, getPartBd, UpdatePriceLot } from './db/lots.js';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 const server = express();
 const PORT = process.env.PORT || 4500;
 server.set('view engine', 'ejs');
@@ -8,6 +9,7 @@ server.set('views', './views');
 server.use(express.static('./public'));
 server.use(cors());
 import bodyParser from "body-parser";
+import { get_access_token } from './controllers/auth/index.js';
 
 import session from 'express-session'
 import multer  from  'multer';
@@ -16,60 +18,41 @@ const upload = multer();
 server.use(bodyParser.urlencoded({ extended: false }));
 
 server.use(bodyParser.json());
+server.use(cookieParser());
 
-
-server.use(session({
-    secret: 'fjkdsfaj',
-    resave: false,
-    saveUninitialized: true,
-    cookie: { maxAge: 600000 }
-  
-  }))
-  
   const users = [
     {username: 'admin', password: '12345'},
   ]
 
 let obj = {};
 
-let user_id;
-
 server.get('/', function (req, res) {
-    // this is only called when there is an authentication user due to isAuthenticated
-    res.render('hello', {user_id});
+    console.log('index: ', req.cookies);
+    res.render('hello');
   })
 
-server.post('/login', upload.none(), function(req, res) {
+server.post('/login', upload.none(), async (req, res) => {
   console.log(req.body);
   if (users[0].username === req.body.user && users[0].password === req.body.password) {
-      req.session.user_id = 1;
-      user_id = req.session.user_id;
-      res.send(false);
+    
+      const access_token = await get_access_token(1);
+      
+      res.json({access_token});
   }
   else {
-    res.send(true);
+    res.send(false);
   }
-   //res.json({status: 'ok'});
-
 })
 
-const onlyAuth = (req, res, next) => {
-   if (user_id) {
-    next();
-    return;
-   }
-   res.json({status: true});
-}
+/*server.get('/logout', async (req, res) => {
+    res.json(false);
+})*/
 
-server.get('/protected_url', onlyAuth, (req, res, next) => {
+/*server.get('/protected_url', onlyAuth, upload.none(), (req, res, next) => {
   res.json({status: false});
 })
+*/
 
-server.get('/logout', (req, res) => {
-  req.session.destroy();
-  user_id = 0;
-  res.json({status: 'logout'})
-})
 
 server.get('/get_length_bd', async(req, res) => {
     console.log('hello get_length_bd');
@@ -107,7 +90,6 @@ server.get('/get_save_card', async(req, res) => {
 
 server.post('/save_card', async(req, res) => {
     obj = req.body;
-    //console.log(req.body);
     res.send('ok');
 });
 
